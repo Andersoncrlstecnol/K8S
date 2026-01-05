@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  repository: wordpress
+  tag: 6.4-apache
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  host: k8s.sliphertech.com.br
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+persistence:
+  enabled: true
+  storageClass: efs-sc
+  size: 5Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+database:
+  host: k8s.cvy6c2ooow0i.us-east-2.rds.amazonaws.com
+  name: k8s
